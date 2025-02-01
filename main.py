@@ -13,22 +13,45 @@ def save_to_file(message, filename):
         file.write(message + "\n")  # Ensures each message is on a new line [some may be multiline so look for the username]
 
 # The actual method to get the messages
-def get_messages(token, channel_id, limit=10):
-    url = f"https://discord.com/api/v9/channels/{channel_id}/messages?limit={limit}"
+def get_messages(token, channel_id, total_messages=10):
+    url = f"https://discord.com/api/v9/channels/{channel_id}/messages"
     headers = {
         "Authorization": token,
         "Content-Type": "application/json"
     }
     
-    response = requests.get(url, headers=headers)
-    
-    if response.status_code == 200:
+    all_messages = []
+    last_message_id = None  # Store last message ID for pagination
+    remaining = total_messages  # Number of messages still needed
+
+    while remaining > 0:
+        limit = min(100, remaining)  # Discord allows max 100 per request
+        params = {"limit": limit}
+        if last_message_id:
+            params["before"] = last_message_id  # Get older messages
+
+        response = requests.get(url, headers=headers, params=params)
+
+        if response.status_code != 200:
+            print(f"Failed to fetch messages: {response.status_code} - {response.text}")
+            break
+
         messages = response.json()
+        if not messages:
+            break  # Stop if there are no more messages
+
         for msg in messages:
-            print(f"[{msg['author']['username']}] {msg['content']}")
-            save_to_file(f"[{msg['author']['username']}] {msg['content']}", channel_id)
-    else:
-        print(f"Failed to fetch messages: {response.status_code} - {response.text}")
+            formatted_msg = f"[{msg['author']['username']}] {msg['content']}"
+            print(formatted_msg)
+            save_to_file(formatted_msg, channel_id)
+
+        all_messages.extend(messages)
+        last_message_id = messages[-1]["id"]  # Update last message ID for pagination
+        remaining -= len(messages)  # Reduce the count
+
+        time.sleep(1)  # Prevent rate limits
+
+    print(f"Fetched {len(all_messages)} messages successfully.")
 
 if __name__ == "__main__":
     token = os.getenv("token")
@@ -45,8 +68,5 @@ if __name__ == "__main__":
     channel_id = input("Enter Channel ID: ")
     limit = input("Enter number of messages to fetch (default 10): ")
     limit = int(limit) if limit.isdigit() else 10
-    if limit > 100:
-        print("Discord API is currently limited to only letting us grab the last 100 messages. This may change in the future! Keep Posted on the github Repo!")
-        exit(1)
     
     get_messages(token, channel_id, limit)

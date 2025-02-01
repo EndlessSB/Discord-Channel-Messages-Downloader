@@ -3,14 +3,14 @@
 **DISCLAIMER: THIS IS FOR EDUCATIONAL PURPOSES ONLY AND BREAKS DISCORD TOS AND DO NOT SHARE YOUR OWN TOKEN WHICH YOU ENTER IN THE DOTENV FILE ANYTHINK WHICH HAPPENS TO YOUR ACCOUNT IS NOT MY FUALT AND IS NOT AN ISSUE WHEN USING TOOLS LIKE THIS. THIS IS THE RISK!!!!**
 
 ## Features:
-- Printing out the last 100 Messages to the console
+- Printing out as many Messages as you like to the console!
 
-- Downloading those same messages
+- Downloading those same messages!
+
+- Now uncapped I have found a bypass in the api!
 
 ## Drawbacks:
 - This cant use a bot token and requires a user token. I will not personally provide a guide but they are out there!
-
-- This is limited to only the last 100 messages currently I am working to find a way to download more I am gonna try to!
 
 - Possible Account bans - Please note using discord api in this way is techincally against there tps and therefore can result in punishment even with the low chance of it
 
