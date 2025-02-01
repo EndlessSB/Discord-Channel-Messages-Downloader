@@ -17,15 +17,15 @@
 
 ## How to guide:
 
-#1 Get your discord token
+1. Get your discord token
 
-#2 Go into the .env file and replace "put your discord token here [not a bot token]" with your token
+2. Go into the .env file and replace "put your discord token here [not a bot token]" with your token
 
-#3 Run the script and paste the channel id
+3. Run the script and paste the channel id
 
-#4 It will print the messages it finds and download them to a txt file with the same name as the channel
+4. It will print the messages it finds and download them to a txt file with the same name as the channel
 
-#5 Enjoy!
+5. Enjoy!
 
 
 ## Credits
