@@ -1,15 +1,12 @@
 import time
 import requests
 import os
-from dotenv import load_dotenv
 import colorama
 from colorama import Fore
 import pyfiglet
 from termcolor import colored
 
 
-# Load environment variables
-load_dotenv()
 
 # Set the console title
 def set_console_title(title):
@@ -31,6 +28,32 @@ def clear_console():
         os.system('cls')
     else:  # Mac/Linux
         os.system('clear')
+
+def retrieve_token(email, password):
+        # Login URL
+        url = "https://discord.com/api/v9/auth/login"
+        payload = {
+            "email": email,
+            "password": password,
+        }
+        headers = {
+            "Content-Type": "application/json",
+        }
+
+        # Send login request
+        response = requests.post(url, json=payload, headers=headers)
+
+        print("Response:", response.text)  # Debugging
+
+        if response.status_code == 200:
+            data = response.json()
+            return data.get('token'), None  # Return token or None if not found
+        elif response.status_code == 401:
+            return None, "Invalid email or password."
+        elif response.status_code == 403:
+            return None, "Two-factor authentication required."
+        else:
+            return None, f"Failed to log in: {response.json().get('message', 'Unknown error')}"
 
 # Save the messages to the file
 def save_to_file(message, filename):
@@ -81,22 +104,21 @@ def get_messages(token, channel_id, total_messages=10):
     print(f"Fetched {len(all_messages)} messages successfully.")
 
 if __name__ == "__main__":
-    token = os.getenv("token")
     clear_console()
 
     set_console_title("Endless - Discord Message Downloader")
 
     print_rainbow_text("Endless - Discord Message Downloader")
     
-    # Ensures there is a token set
-    if not token:
-        print("Error: Token not found. Make sure to set it in the .env file.")
-        exit(1)
-    # Ensures the token is actually a token and not just the deault preset
-    if token == "put your discord token here [not a bot token]":
-        print("Please Replace the token to your actual tokeen :)")
-        exit(1)
+    email = input("Please enter your email --> ")
+    password = input("Please enter your password --> ")
 
+    token, error = retreive_token(email, password)
+
+    if error:
+        print(f"An error occured: {error}")
+        exit()
+    
     # server_id = input("Enter Server ID: ")  - Not currently used and not needed here incase api changes
     channel_id = input("Enter Channel ID: ")
     limit = input("Enter number of messages to fetch (default 10): ")
