@@ -10,22 +10,20 @@
 - Now uncapped I have found a bypass in the api!
 
 ## Drawbacks:
-- This cant use a bot token and requires a user token. I will not personally provide a guide but they are out there!
-
 - Possible Account bans - Please note using discord api in this way is techincally against there tps and therefore can result in punishment even with the low chance of it
+
+- Can not use a bot account
 
 
 ## How to guide:
 
-1. Get your discord token
+1. INstall any requierd modules
 
-2. Go into the .env file and replace "put your discord token here [not a bot token]" with your token
+2. Run the script
 
-3. Run the script and paste the channel id
+3. Type in your email and password [New update token automatically fetched , 2fa not supported as of now]
 
-4. It will print the messages it finds and download them to a txt file with the same name as the channel
-
-5. Enjoy!
+4. Enjoy!
 
 
 ## Credits
